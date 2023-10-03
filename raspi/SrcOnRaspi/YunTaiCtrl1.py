@@ -1,6 +1,6 @@
 import serial
 
-Port = "/dev/ttyUSB1"  # 串口
+Port = "/dev/ttyACM0"  # 串口
 baudRate = 9600  # 波特率
 ser = serial.Serial(Port, baudRate, timeout=1)
 
