@@ -23,7 +23,7 @@ def SockEstablish():
 def SendVideoInit():
 	#建立图像读取对象
 	global capture
-	capture = cv2.VideoCapture(0,cv2.CAP_V4L2)
+	capture = cv2.VideoCapture(0)
 	#读取一帧图像，读取成功:ret=1 frame=读取到的一帧图像；读取失败:ret=0
 	global ret
 	global frame
