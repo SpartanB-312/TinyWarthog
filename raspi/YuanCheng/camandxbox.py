@@ -58,8 +58,8 @@ def XboxJoystick():
 
 def xboxinputprocess():
     global xboxjoystickinput
-    for i in range(0,5):
-        xboxjoystickinput[i]=int(xboxjoystickinput[i])
+    for i in range(0,6):
+        xboxjoystickinput[i]=int(90*(xboxjoystickinput[i]+1))
     
 
 def ReceiveVideoInit():
