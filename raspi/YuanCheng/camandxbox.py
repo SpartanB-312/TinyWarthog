@@ -55,7 +55,13 @@ def XboxJoystick():
     xboxjoystickinput=axis
     print(xboxjoystickinput)
         #textPrint.unindent()
- 
+
+def xboxinputprocess():
+    global xboxjoystickinput
+    for i in range(0,5):
+        xboxjoystickinput[i]=int(xboxjoystickinput[i])
+    
+
 def ReceiveVideoInit():
     global s
     global conn
@@ -124,6 +130,7 @@ if __name__ == '__main__':
     ReceiveVideoInit()
     while 1:
         XboxJoystick()
+        xboxinputprocess()
         ReceiveVideo()
         print('---------')
     
