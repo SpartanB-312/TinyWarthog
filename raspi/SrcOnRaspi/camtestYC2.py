@@ -53,7 +53,8 @@ def SendVideo():
 		sock.send(stringData);
 		#读取服务器返回值
 		receive = sock.recv(1024)
-		if len(receive):print(str(receive,encoding='utf-8'))
+		#if len(receive):print(str(receive,encoding='utf-8'))
+		print(str(receive,encoding='utf-8'))
 		#读取下一帧图片
 		ret, frame = capture.read()
 		if cv2.waitKey(10) == 27:

@@ -16,11 +16,18 @@ def ArduinoInit():
 def ArduinoCtrl():
 	global ser
 	global receive
-	send = receive  # 发送给arduino的数据
+	presend=str(receive,encoding='utf-8')
+	presend1=''.join(filter(lambda i: i in [','] or i.isalnum(),presend))
+	presend2=list(presend1.split(","))
+	print(type(presend2))
+	print(presend2[3])
+	send = presend2[3]  # 发送给arduino的数据
 	ser.write(send.encode())
-	str = ser.readline().decode()  # 获取arduino发送的数据
-	if(str != ""):
-		print(str)
+	arduinostr = ser.readline().decode()  # 获取arduino发送的数据
+	if(arduinostr != ""):
+		print(arduinostr)
+		print('--------')
+		print(send)
 
 
 
@@ -59,7 +66,7 @@ def SendVideo():
 	global receive
 	if ret:
 		#停止0.1S 防止发送过快服务的处理不过来，如果服务端的处理很多，那么应该加大这个值
-		time.sleep(0.01)
+		time.sleep(0.05)
 		#cv2.imencode将图片格式转换(编码)成流数据，赋值到内存缓存中;主要用于图像数据格式的压缩，方便网络传输
 		#'.jpg'表示将图片按照jpg格式编码。
 		result, imgencode = cv2.imencode('.jpg', frame, encode_param)
