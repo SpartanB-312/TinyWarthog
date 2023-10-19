@@ -34,14 +34,14 @@ void loop()
     YTangle1 = Servo1Ctrl.toInt();  // 把变量字符串类型转成整型
     YTangle2 = Servo2Ctrl.toInt();
     Serial.print(YTangle1);
-    Serial.print(,);
+    Serial.print(",");
     Serial.println(YTangle2); // 输出数据到串口上，以便观察
   }
   temp = ""; // 清空临时变量
 
   myservo1.write(YTangle1); // 控制舵机转动到相应的角度位置。
-  myservo2.write(YTangle2)
-  delay(100);           // 延时100毫秒
+  myservo2.write(YTangle2);
+  delay(10);           // 延时100毫秒
 }
 
 String fenge(String str, String fen, int index)
