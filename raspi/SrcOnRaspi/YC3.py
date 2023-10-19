@@ -23,7 +23,9 @@ def ArduinoCtrl():
 	print(presend2[3])
 	send = presend2[3]  # 发送给arduino的数据
 	ser.write(send.encode())
+	time.sleep(0.05)
 	arduinostr = ser.readline().decode()  # 获取arduino发送的数据
+	#time.sleep(0.05)
 	if(arduinostr != ""):
 		print(arduinostr)
 		print('--------')
@@ -83,6 +85,7 @@ def SendVideo():
 		#读取服务器返回值
 		receive = sock.recv(1024)
 		if len(receive):print(str(receive,encoding='utf-8'))
+		ArduinoCtrl()
 		#读取下一帧图片
 		ret, frame = capture.read()
 		if cv2.waitKey(10) == 27:
@@ -94,4 +97,4 @@ if __name__ == '__main__':
 	SendVideoInit()
 	while 1:
 		SendVideo()
-		ArduinoCtrl()
+		#ArduinoCtrl()

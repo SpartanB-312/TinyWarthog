@@ -18,13 +18,15 @@ def ArduinoCtrl():
 	global receive
 	presend=str(receive,encoding='utf-8')
 	presend1=''.join(filter(lambda i: i in [','] or i.isalnum(),presend))
-	presend2=list(presend1.split(","))
-	#print(type(presend2))
-	#print(presend2[3])
+	#presend2=list(presend1.split(","))
+	print(type(presend1))
+	print(presend1)
 	send = presend1  # 发送给arduino的数据
 	ser.write(send.encode())
+	time.sleep(0.1)
 	arduinostr = ser.readline().decode()  # 获取arduino发送的数据
-	if(arduinostr != ""):
+	if(arduinostr == ""):
+	#	arduinostr = ser.readline().decode()
 		print(arduinostr)
 		print('--------')
 		print(send)
@@ -66,7 +68,7 @@ def SendVideo():
 	global receive
 	if ret:
 		#停止0.1S 防止发送过快服务的处理不过来，如果服务端的处理很多，那么应该加大这个值
-		time.sleep(0.05)
+		#time.sleep(0.5)
 		#cv2.imencode将图片格式转换(编码)成流数据，赋值到内存缓存中;主要用于图像数据格式的压缩，方便网络传输
 		#'.jpg'表示将图片按照jpg格式编码。
 		result, imgencode = cv2.imencode('.jpg', frame, encode_param)
@@ -82,6 +84,7 @@ def SendVideo():
 		sock.send(stringData);
 		#读取服务器返回值
 		receive = sock.recv(1024)
+		#ArduinoCtrl()
 		if len(receive):print(str(receive,encoding='utf-8'))
 		#读取下一帧图片
 		ret, frame = capture.read()
@@ -92,6 +95,11 @@ if __name__ == '__main__':
 	ArduinoInit()
 	SockEstablish()
 	SendVideoInit()
+	j=0
 	while 1:
 		SendVideo()
-		ArduinoCtrl()
+		#time.sleep(0.5)
+		if(j==10):        
+			ArduinoCtrl()
+			j=0
+		j=j+1
