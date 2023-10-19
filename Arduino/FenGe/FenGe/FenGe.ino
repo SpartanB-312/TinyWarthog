@@ -20,6 +20,7 @@ void setup()
     Serial.print(part03);
     Serial.print(part04);
     Serial.println(part05);   //没有，输出-1
+    Serial.println("---");
 }
   
 void loop()
