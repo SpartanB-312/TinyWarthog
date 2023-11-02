@@ -57,13 +57,17 @@ void loop()
 {
 
     Motor_Test();
-    Read_Motor_V();//读取脉冲计算速度ok
+    //Read_Motor_V();//读取脉冲计算速度ok
 
     Serial.print(L_Motor_PID.input);
     Serial.print(",");
     Serial.print(L_Motor_PID.feedback);
     Serial.print(",");
-    Serial.println(R_Motor_PID.feedback); ;
+    Serial.println(R_Motor_PID.output);
+    //Serial.println("-----");
+    //Serial.println(R_PWM);
+    //Serial.println("-----");
+    //Serial.println(R_Motor_PID.feedback); 
 }
 /*
 Motor_Test
@@ -83,7 +87,7 @@ void PID_Cal_Computer_Out(void)
     /*--------------------*/
     //test
     L_Motor_PID.output=100;
-    L_Motor_PID.output=-100;
+    R_Motor_PID.output=100;
     //
     /*--------------------*/
     Motor_PWM_Set(L_Motor_PID.output, R_Motor_PID.output);
@@ -99,6 +103,7 @@ Motor_PWM_Set
 */
 void Motor_PWM_Set(float L_PWM, float R_PWM)
 {
+  /*
 
     if(L_PWM > 0)
     {
@@ -124,7 +129,14 @@ void Motor_PWM_Set(float L_PWM, float R_PWM)
         digitalWrite(TB6612_R_IN1, LOW);
         digitalWrite(TB6612_R_IN2, HIGH);
         analogWrite(Motor_R_PWM, -1 * R_PWM);
-    }
+    }*/
+    digitalWrite(TB6612_L_IN1, LOW);
+    digitalWrite(TB6612_L_IN2, HIGH);
+    analogWrite(Motor_L_PWM, L_PWM);
+    digitalWrite(TB6612_R_IN1, HIGH);
+    digitalWrite(TB6612_R_IN2, LOW);
+    analogWrite(Motor_R_PWM, R_PWM);
+        
 }
 /*
 Motor_Init

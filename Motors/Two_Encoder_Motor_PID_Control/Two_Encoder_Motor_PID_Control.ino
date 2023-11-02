@@ -103,6 +103,10 @@ void loop()
     Serial.print(",");
     Serial.print(L_Motor_PID.feedback);
     Serial.print(",");
+    Serial.print(L_Motor_PID.output);
+    Serial.print(",");
+    Serial.print(R_Motor_PID.output);
+    Serial.print(",");
     Serial.println(R_Motor_PID.feedback); ;
 }
 
