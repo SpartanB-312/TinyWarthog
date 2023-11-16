@@ -41,7 +41,7 @@ for c in cnts:
     peri = cv2.arcLength(c, True)
     approx = cv2.approxPolyDP(c, 0.02 * peri, True)
  
-    # 如果边缘有4个顶点（vertices），则找到了恒温器并展示
+    # 如果边缘有4个顶点（vertices），则找到了LCD并展示
     if len(approx) == 4:
         displayCnt = approx
         break
