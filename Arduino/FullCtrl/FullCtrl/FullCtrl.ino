@@ -12,13 +12,13 @@
 #define TB6612_R_IN2 25
 #define Motor_R_PWM 13
 
-#define TB6612_LB_IN1 26
-#define TB6612_LB_IN2 27
-#define Motor_L_BPWM 14
+#define TB6612_LB_IN1 30
+#define TB6612_LB_IN2 31
+#define Motor_LB_PWM 7
 
-#define TB6612_R_BIN1 28
-#define TB6612_R_BIN2 29
-#define Motor_R_BPWM 15
+#define TB6612_RB_IN1 32
+#define TB6612_RB_IN2 33
+#define Motor_RB_PWM 6
 /*variate----------------------------------------------------------------------*/
 typedef struct
 {
@@ -48,7 +48,7 @@ float V_R = 0; //临时存储速度变量
 int Motor_L_dir = 0; //反馈的电机转动方向
 int Motor_R_dir = 0; //反馈的电机转动方向
 PID L_Motor_PID, R_Motor_PID; //PID结构体
-PID L_Motor_PIDB, R_Motor_PIDB; //PID结构体
+PID LB_Motor_PID, RB_Motor_PID; //PID结构体
 
 Servo myservo1; // 创建一个名为 myservo 的伺服电机实例（名称可随你喜欢命名）
 Servo myservo2;
@@ -94,8 +94,8 @@ void loop()
     YTangle2 = Servo2Ctrl.toInt();
     L_Motor_PID.input = Speed1;
     R_Motor_PID.input = -Speed1;
-    L_Motor_PIDB.input = Speed1;
-    R_Motor_PIDB.input = -Speed1;
+    LB_Motor_PID.input = Speed1;
+    RB_Motor_PID.input = -Speed1;
 
 
     myservo1.write(YTangle1); // 控制舵机转动到相应的角度位置。
@@ -103,7 +103,7 @@ void loop()
     PID_Cal_Computer_Out();
     Serial.print(R_Motor_PID.output);
     Serial.print(",");
-    Serial.print(L_Motor_PID.output);
+    Serial.print(RB_Motor_PID.output);
     Serial.print(",");
     Serial.print(YTangle1);
     Serial.print(",");
@@ -157,9 +157,11 @@ void PID_Cal_Computer_Out(void)
     //test
     L_Motor_PID.output=L_Motor_PID.input;
     R_Motor_PID.output=R_Motor_PID.input;
+    LB_Motor_PID.output=LB_Motor_PID.input;
+    RB_Motor_PID.output=RB_Motor_PID.input;
     //
     /*--------------------*/
-    Motor_PWM_Set(L_Motor_PID.output, R_Motor_PID.output);
+    Motor_PWM_Set(L_Motor_PID.output, R_Motor_PID.output, LB_Motor_PID.output, RB_Motor_PID.output);
     timecnt++;
     if(timecnt == 20)
     {
@@ -170,7 +172,7 @@ void PID_Cal_Computer_Out(void)
 /*
 Motor_PWM_Set
 */
-void Motor_PWM_Set(float L_PWM, float R_PWM)
+void Motor_PWM_Set(float L_PWM, float R_PWM, float LB_PWM, float RB_PWM)
 {
   /*
 
@@ -205,6 +207,13 @@ void Motor_PWM_Set(float L_PWM, float R_PWM)
     digitalWrite(TB6612_R_IN1, HIGH);
     digitalWrite(TB6612_R_IN2, LOW);
     analogWrite(Motor_R_PWM, R_PWM);
+    Serial.println(LB_PWM);
+    digitalWrite(TB6612_LB_IN1, LOW);
+    digitalWrite(TB6612_LB_IN2, HIGH);
+    analogWrite(Motor_LB_PWM, LB_PWM);
+    digitalWrite(TB6612_RB_IN1, HIGH);
+    digitalWrite(TB6612_RB_IN2, LOW);
+    analogWrite(Motor_RB_PWM, RB_PWM);
         
 }
 /*
@@ -227,6 +236,22 @@ void Motor_Init(void)
     digitalWrite(TB6612_R_IN1, LOW);
     digitalWrite(TB6612_R_IN2, LOW);
     digitalWrite(Motor_R_PWM, LOW);
+    
+    pinMode(TB6612_LB_IN1, OUTPUT); //设置两个驱动引脚为输出模式
+    pinMode(TB6612_LB_IN2, OUTPUT); //
+    pinMode(TB6612_RB_IN1, OUTPUT); //设置两个驱动引脚为输出模式
+    pinMode(TB6612_RB_IN2, OUTPUT); //
+
+    pinMode(Motor_LB_PWM, OUTPUT);  //设置使能引脚为输出模式
+    pinMode(Motor_RB_PWM, OUTPUT);  //设置使能引脚为输出模式
+
+    //驱动芯片控制引脚全部拉低
+    digitalWrite(TB6612_LB_IN1, LOW);
+    digitalWrite(TB6612_LB_IN2, LOW);
+    digitalWrite(Motor_LB_PWM, LOW);
+    digitalWrite(TB6612_RB_IN1, LOW);
+    digitalWrite(TB6612_RB_IN2, LOW);
+    digitalWrite(Motor_RB_PWM, LOW);
 }
 /*
 PID_Init
@@ -249,4 +274,19 @@ void PID_Init(void)
     R_Motor_PID.input = 0;
     R_Motor_PID.err_x_max = 1000;
 
+    LB_Motor_PID.k_p = 0.08;
+    LB_Motor_PID.k_i = 0.091;
+    LB_Motor_PID.k_d = 0.01;
+    LB_Motor_PID.out_max = 250;
+    LB_Motor_PID.out_min = -250;
+    LB_Motor_PID.input = 0;
+    LB_Motor_PID.err_x_max = 1000;
+
+    RB_Motor_PID.k_p = 0.08;
+    RB_Motor_PID.k_i = 0.091;
+    RB_Motor_PID.k_d = 0.01;
+    RB_Motor_PID.out_max = 250;
+    RB_Motor_PID.out_min = -250;
+    RB_Motor_PID.input = 0;
+    RB_Motor_PID.err_x_max = 1000;
 }
