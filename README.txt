@@ -1,8 +1,3 @@
-# TinyWarthog
-组员
->ZHW  
->ZBY  
-
 # 机电测控综合训练程序说明
 raspi\SrcOnRaspi\YC4.py 为树莓派端最终代码
 raspi\YuanCheng\camandxbox2.py 为PC端最终代码

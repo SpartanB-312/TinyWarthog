@@ -84,18 +84,21 @@ void loop()
 
   if (temp != "") // 判断临时变量是否为空，非空则进行舵机角度控制
   {
+    Speed0Ctrl = fenge(temp, ",", 0);
     Speed1Ctrl = fenge(temp, ",", 1);
     Servo1Ctrl = fenge(temp, ",", 2);
     Servo2Ctrl = fenge(temp, ",", 3);
     
+    Speed0=Speed0Ctrl.toInt();
+    Speed0=float(Speed0);
     Speed1=Speed1Ctrl.toInt();
     Speed1=float(Speed1);
     YTangle1 = Servo1Ctrl.toInt();  // 把变量字符串类型转成整型
     YTangle2 = Servo2Ctrl.toInt();
-    L_Motor_PID.input = Speed1;
-    R_Motor_PID.input = -Speed1;
-    LB_Motor_PID.input = Speed1;
-    RB_Motor_PID.input = -Speed1;
+    L_Motor_PID.input = Speed1+Speed0;
+    R_Motor_PID.input = Speed1-Speed0;
+    LB_Motor_PID.input = Speed1+Speed0;
+    RB_Motor_PID.input = Speed1-Speed0;
 
 
     myservo1.write(YTangle1); // 控制舵机转动到相应的角度位置。

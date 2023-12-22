@@ -39,9 +39,6 @@ def SockEstablish():
 	global sock
 	address = ('192.168.137.1', 8002)
 	try:
-		#建立socket对象，参数意义见https://blog.csdn.net/rebelqsp/article/details/22109925
-		#socket.AF_INET：服务器之间网络通信 
-		#socket.SOCK_STREAM：流式socket , for TCP
 		sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 		#开启连接
 		sock.connect(address)
